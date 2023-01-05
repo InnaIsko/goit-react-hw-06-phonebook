@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Box } from 'components/Box';
 import { nanoid } from 'nanoid';
-import { useDispatch } from 'react-redux';
-import { addContact } from 'redux/store';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact, getContactsValue } from 'redux/contactsSlice';
 import { Input, Label, BtnForm } from './Form. styled';
 
 export function ContactForm() {
+  const contacts = useSelector(getContactsValue);
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
@@ -29,8 +30,13 @@ export function ContactForm() {
   const handleSabmit = event => {
     event.preventDefault();
 
-    dispatch(addContact({ name, number, id: nanoid() }));
+    const nameValue = contacts.some(elem => elem.name === name);
 
+    if (nameValue) {
+      alert(`${name} is olredi in contacts`);
+    } else {
+      dispatch(addContact({ name, number, id: nanoid() }));
+    }
     setName('');
     setNumber('');
   };

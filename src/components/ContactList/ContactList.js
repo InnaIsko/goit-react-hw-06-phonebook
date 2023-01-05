@@ -1,20 +1,19 @@
 import { ContactListItem } from './ContactListItem';
-import { useSelector, useDispatch } from 'react-redux';
-import { deliteContact } from 'redux/store';
+import { useSelector } from 'react-redux';
+import { getContactsValue, getFilterValue } from 'redux/contactsSlice';
 
 export function ContactList() {
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(getContactsValue);
+  const filterValue = useSelector(getFilterValue);
 
-  const dispatch = useDispatch();
+  const filter = contacts.filter(contact =>
+    contact.name.toLowerCase().includes(filterValue.toLowerCase())
+  );
 
   return (
     <ul>
-      {contacts.map(contact => (
-        <ContactListItem
-          onContactInfo={contact}
-          key={contact.id}
-          onButtonDelite={() => dispatch(deliteContact(contact.id))}
-        />
+      {filter.map(contact => (
+        <ContactListItem onContactInfo={contact} key={contact.id} />
       ))}
     </ul>
   );
