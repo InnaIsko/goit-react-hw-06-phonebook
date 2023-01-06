@@ -22,7 +22,11 @@ const counterSlice = createSlice({
       state.contacts.items.push(action.payload);
     },
     deliteContact(state, action) {
-      state.contacts.items.filter(elem => elem.id !== action.payload);
+      // state.contacts.items.filter(elem => elem.id !== action.payload);
+      const index = state.contacts.items.findIndex(
+        contact => contact.id === action.payload
+      );
+      state.contacts.items.splice(index, 1);
     },
     getValue(state, action) {
       state.contacts.filter = action.payload;
